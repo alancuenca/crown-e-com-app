@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createAuthUserWithEmailAndPassword } from "../../utilities/firebase/firebase";
+import { createAuthUserWithEmailAndPassword, createUserDocFromAuth } from "../../utilities/firebase/firebase";
 
 const formFields = {
     displayName: '',
@@ -11,6 +11,10 @@ const formFields = {
 const SignUp = () => {
     const [ signUpFields, setSignUpFields ] = useState(formFields);
     const { displayName, email, password, confirmPassword } = signUpFields;
+
+    const resetFormFields = () => {
+        setSignUpFields(formFields);
+    }
 
     const handleChange = (e) => {
         e.preventDefault();
@@ -24,8 +28,12 @@ const SignUp = () => {
             alert("Passwords do not match")
             return
         };
+        
         try {
-            await createAuthUserWithEmailAndPassword(email, password)
+            const { user } = await createAuthUserWithEmailAndPassword(email, password);
+            await createUserDocFromAuth(user, { displayName });
+            resetFormFields();
+
         } catch (error) {
             alert(error)
             console.log("Error signing up", error);
