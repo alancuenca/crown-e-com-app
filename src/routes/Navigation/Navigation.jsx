@@ -15,6 +15,9 @@ const Routes = () => {
                     <Link className="link" to="/shop">
                         SHOP
                     </Link>
+                    <Link className="link" to="/signIn">
+                        Sign-In
+                    </Link>
                 </div>
             </div>
             <Outlet />
