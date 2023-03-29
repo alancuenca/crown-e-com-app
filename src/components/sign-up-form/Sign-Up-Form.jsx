@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { createAuthUserWithEmailAndPassword, createUserDocFromAuth } from "../../utilities/firebase/firebase";
+import FormInput from "../form-input/form-input";
+import './sign-up.scss'
 
 const formFields = {
     displayName: '',
@@ -28,7 +30,7 @@ const SignUp = () => {
             alert("Passwords do not match")
             return
         };
-        
+
         try {
             const { user } = await createAuthUserWithEmailAndPassword(email, password);
             await createUserDocFromAuth(user, { displayName });
@@ -41,11 +43,12 @@ const SignUp = () => {
     };
 
     return (
-        <div>
-            <h1>Sign up with an email and password</h1>
+        <div className="sign-up-container">
+            <h2>Don't Have An Account?</h2>
+            <span>Sign up with an email and password</span>
             <form onSubmit={handleSubmit}>
-                <label>Display Name</label>
-                <input
+                <FormInput
+                    label="Display Name"
                     type="text"
                     required
                     onChange={handleChange}
@@ -53,8 +56,8 @@ const SignUp = () => {
                     value={displayName}
                     />
 
-                <label>Email</label>
-                <input
+                <FormInput
+                    label="Email"
                     type="email"
                     required
                     onChange={handleChange}
@@ -62,8 +65,8 @@ const SignUp = () => {
                     value={email}
                     />
 
-                <label>Password</label>
-                <input
+                <FormInput
+                    label="Password"
                     type="password"
                     required
                     onChange={handleChange}
@@ -71,8 +74,8 @@ const SignUp = () => {
                     value={password}
                     />
 
-                <label>Confirm Password</label>
-                <input
+                <FormInput
+                    label="Confirm Password"
                     type="password"
                     required
                     onChange={handleChange}
