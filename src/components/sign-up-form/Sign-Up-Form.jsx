@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { createAuthUserWithEmailAndPassword, createUserDocFromAuth } from "../../utilities/firebase/firebase";
+import { useContext } from "react";
+import { UserContext } from "../../Context/UserContext";
 import FormInput from "../form-input/form-input";
 import Button from "../buttons/Button";
-import './sign-up.scss'
+import './sign-up.scss';
 
-const formFields = {
+const emptyFormFields = {
     displayName: '',
     email: '',
     password: '',
@@ -12,35 +14,44 @@ const formFields = {
 };
 
 const SignUp = () => {
-    const [ signUpFields, setSignUpFields ] = useState(formFields);
+    const { setCurrentUser } = useContext(UserContext);
+    const [ signUpFields, setSignUpFields ] = useState(emptyFormFields);
     const { displayName, email, password, confirmPassword } = signUpFields;
 
     const resetFormFields = () => {
-        setSignUpFields(formFields);
-    }
-
-    const handleChange = (e) => {
-        e.preventDefault();
-        const { name, value } = e.target;
-        setSignUpFields({ ...signUpFields, [ name ]: value })
+        setSignUpFields(emptyFormFields);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         if (password !== confirmPassword) {
             alert("Passwords do not match")
             return
         };
 
         try {
-            const { user } = await createAuthUserWithEmailAndPassword(email, password);
-            await createUserDocFromAuth(user, { displayName });
-            resetFormFields();
+            const user = await createAuthUserWithEmailAndPassword(
+                email,
+                password,
+                displayName
+            );
 
+            await createUserDocFromAuth(user, { displayName });
+
+            setCurrentUser(user);
+
+            resetFormFields();
         } catch (error) {
-            alert(error)
-            console.log("Error signing up", error);
+            alert("Error signing up", error)
+            console.log(error);
         }
+    };
+
+    const handleChange = (e) => {
+        e.preventDefault();
+        const { name, value } = e.target;
+        setSignUpFields({ ...signUpFields, [ name ]: value })
     };
 
     return (
@@ -55,7 +66,8 @@ const SignUp = () => {
                     onChange={handleChange}
                     name="displayName"
                     value={displayName}
-                    />
+
+                />
 
                 <FormInput
                     label="Email"
@@ -64,7 +76,7 @@ const SignUp = () => {
                     onChange={handleChange}
                     name="email"
                     value={email}
-                    />
+                />
 
                 <FormInput
                     label="Password"
@@ -73,7 +85,7 @@ const SignUp = () => {
                     onChange={handleChange}
                     name="password"
                     value={password}
-                    />
+                />
 
                 <FormInput
                     label="Confirm Password"

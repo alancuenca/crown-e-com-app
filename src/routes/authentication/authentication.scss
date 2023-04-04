@@ -1,16 +1,27 @@
-.authentication-container{
+.authentication-container {
     display: flex;
+    // position: relative;
     justify-content: space-between;
     width: 50dvw;
     margin: 5% auto;
     flex-wrap: wrap;
 }
 
+.welcome-user {
+    position: absolute;
+    margin-left: 5%;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+    margin-bottom: 2rem;
+}
+
 @media (max-width: 768px) {
     .authentication-container {
-    display: flex;
-    flex-direction: column;
-    width: 90dvw;
+        display: flex;
+        flex-direction: column;
+        width: 90dvw;
 
     }
 }

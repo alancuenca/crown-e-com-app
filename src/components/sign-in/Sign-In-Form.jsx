@@ -1,23 +1,21 @@
 import { useState } from "react";
-import { signInWithGooglePopup, createUserDocFromAuth, signInAuthUserWithEmailAndPassword } from "../../utilities/firebase/firebase";
+import { signInWithGooglePopup, signInAuthUserWithEmailAndPassword } from "../../utilities/firebase/firebase";
 import FormInput from "../form-input/form-input";
 import Button from "../buttons/Button";
 import './sign-in.scss'
 
-
-
-const formFields = {
+const initialFormFields = {
     email: '',
     password: '',
 };
 
 const SignIn = () => {
-    const [ signUpFields, setSignUpFields ] = useState(formFields);
+    const [ signUpFields, setSignUpFields ] = useState(initialFormFields);
     const { email, password } = signUpFields;
 
     const resetFormFields = () => {
-        setSignUpFields(formFields);
-    }
+        setSignUpFields(initialFormFields);
+    };
 
     const handleChange = (e) => {
         e.preventDefault();
@@ -25,32 +23,37 @@ const SignIn = () => {
         setSignUpFields({ ...signUpFields, [ name ]: value })
     };
 
+    const handleSignInError = (error) => {
+        switch (error.code) {
+            case 'auth/wrong-password':
+                alert('Incorrect password')
+                break;
+            case 'auth/user-not-found':
+                alert('User email not found')
+                break;
+            default:
+                console.log(error);
+                break;
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const response = await signInAuthUserWithEmailAndPassword(email, password)
-            console.log(response);
+            await signInAuthUserWithEmailAndPassword(
+                email,
+                password
+            );
             resetFormFields();
 
         } catch (error) {
-            switch (error.code) {
-                case 'auth/wrong-password':
-                    alert('Incorrect password')
-                    break;
-                case 'auth/user-not-found':
-                    alert('User email not found')
-                    break;
-                default:
-                    console.log(error);
-                    break;
-            }
+            handleSignInError(error);
         }
     };
 
     const signInWithGoogle = async () => {
-        const { user } = await signInWithGooglePopup();
-        await createUserDocFromAuth(user);
+        await signInWithGooglePopup();
     };
 
     return (
