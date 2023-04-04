@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { createAuthUserWithEmailAndPassword, createUserDocFromAuth } from "../../utilities/firebase/firebase";
+import { useContext } from "react";
+import { UserContext } from "../../Context/UserContext";
 import FormInput from "../form-input/form-input";
 import Button from "../buttons/Button";
 import './sign-up.scss';
 
-const formFields = {
+const emptyFormFields = {
     displayName: '',
     email: '',
     password: '',
@@ -12,11 +14,12 @@ const formFields = {
 };
 
 const SignUp = () => {
-    const [ signUpFields, setSignUpFields ] = useState(formFields);
+    const { setCurrentUser } = useContext(UserContext);
+    const [ signUpFields, setSignUpFields ] = useState(emptyFormFields);
     const { displayName, email, password, confirmPassword } = signUpFields;
 
     const resetFormFields = () => {
-        setSignUpFields(formFields);
+        setSignUpFields(emptyFormFields);
     };
 
     const handleSubmit = async (e) => {
@@ -28,17 +31,20 @@ const SignUp = () => {
         };
 
         try {
-            const { user } = await createAuthUserWithEmailAndPassword(
+            const user = await createAuthUserWithEmailAndPassword(
                 email,
                 password,
                 displayName
             );
 
             await createUserDocFromAuth(user, { displayName });
+
+            setCurrentUser(user);
+
             resetFormFields();
         } catch (error) {
-            alert(error)
-            console.log("Error signing up", error);
+            alert("Error signing up", error)
+            console.log(error);
         }
     };
 
@@ -60,6 +66,7 @@ const SignUp = () => {
                     onChange={handleChange}
                     name="displayName"
                     value={displayName}
+
                 />
 
                 <FormInput

@@ -6,6 +6,7 @@ import './authentication.scss';
 
 const Authentication = () => {
   const { currentUser } = useContext(UserContext);
+  
   return (
     <>
       <h2>

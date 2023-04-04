@@ -14,10 +14,10 @@ export const UserContextProvider = ({ children }) => {
                 createUserDocFromAuth(user);
             }
             setCurrentUser(user)
-        })
+        });
 
         return unsibscribe
-    }, [])
+    }, []);
 
     return <UserContext.Provider
         value={credentials}

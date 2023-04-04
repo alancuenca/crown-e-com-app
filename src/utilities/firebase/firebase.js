@@ -8,7 +8,7 @@ import {
     signInWithEmailAndPassword,
     signOut,
     onAuthStateChanged,
-    updateProfile
+    updateProfile,
 } from 'firebase/auth';
 
 import {
@@ -58,12 +58,15 @@ export const createUserDocFromAuth = async (
         const createdAt = new Date();
 
         try {
+            await updateProfile(userAuth, { displayName });
+
             await setDoc(userDocRef, {
-                displayName,
+                displayName: userAuth.displayName || additionalInformation.displayName,
                 email,
                 createdAt,
                 ...additionalInformation
             });
+
         } catch (error) {
             console.log('error creating user', error.message);
         }
@@ -73,7 +76,7 @@ export const createUserDocFromAuth = async (
 };
 
 export const createAuthUserWithEmailAndPassword = async (email, password, displayName) => {
-  if (!email || !password) return;
+    if (!email || !password) return;
 
     const { user } = await createUserWithEmailAndPassword(auth, email, password);
 
