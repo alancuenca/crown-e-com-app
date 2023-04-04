@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { ReactComponent as BagIcon } from '../../assets/shopping-bag.svg';
 import './cartIcon.scss';
-import { CartContext } from '../../Context/DropDownContext';
+import { CartContext } from '../../Context/CartContext';
 
 const CartIcon = () => {
 

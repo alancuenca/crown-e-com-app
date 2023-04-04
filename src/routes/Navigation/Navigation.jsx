@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { Outlet, Link } from "react-router-dom";
 
 import { UserContext } from "../../Context/UserContext";
-import { CartContext } from "../../Context/DropDownContext";
+import { CartContext } from "../../Context/CartContext";
 
 import './navigation.scss';
 import { ReactComponent as CrownLogo } from '../../assets/crown.svg';

@@ -8,7 +8,7 @@ import reportWebVitals from './reportWebVitals';
 
 import { ProductProvider } from './Context/ProductContext';
 import { UserContextProvider } from './Context/UserContext';
-import { CartProvider } from './Context/DropDownContext';
+import { CartProvider } from './Context/CartContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

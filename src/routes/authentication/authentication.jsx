@@ -6,18 +6,20 @@ import './authentication.scss';
 
 const Authentication = () => {
   const { currentUser } = useContext(UserContext);
-  
+
   return (
     <>
       <h2>
         {currentUser
           ?
-          <div className='welcome-user'>
+          <div>
             Welcome to Crown, {currentUser.displayName}
           </div>
           :
           <div className='authentication-container'>
+          <div className='welcome-user'>
             Welcome to Crown. Please Sign In
+          </div>
             <SignIn />
             <SignUp />
           </div>
