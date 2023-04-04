@@ -6,12 +6,7 @@ import { ReactComponent as CrownLogo } from '../../assets/crown.svg';
 import { signOutUser } from "../../utilities/firebase/firebase";
 
 const Routes = () => {
-    const { currentUser, setCurrentUser } = useContext(UserContext);
-
-    const signOutHandler = async () => {
-        await signOutUser();
-        setCurrentUser(null);
-    };
+    const { currentUser } = useContext(UserContext);
 
     return (
         <>
@@ -28,7 +23,7 @@ const Routes = () => {
                     {
                         currentUser ? (
                             <span className="link"
-                                onClick={signOutHandler}
+                                onClick={signOutUser}
                             >
                                 Sign-Out
                             </span>

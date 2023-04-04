@@ -1,10 +1,8 @@
-import { useState, useContext, useCallback } from "react";
+import { useState } from "react";
 import { createAuthUserWithEmailAndPassword, createUserDocFromAuth } from "../../utilities/firebase/firebase";
 import FormInput from "../form-input/form-input";
 import Button from "../buttons/Button";
 import './sign-up.scss';
-
-import { UserContext } from "../../Context/UserContext";
 
 const formFields = {
     displayName: '',
@@ -17,37 +15,38 @@ const SignUp = () => {
     const [ signUpFields, setSignUpFields ] = useState(formFields);
     const { displayName, email, password, confirmPassword } = signUpFields;
 
-    const { setCurrentUser } = useContext(UserContext);
+    const resetFormFields = () => {
+        setSignUpFields(formFields);
+    };
 
-    const handleChange = useCallback((e) => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (password !== confirmPassword) {
+            alert("Passwords do not match")
+            return
+        };
+
+        try {
+            const { user } = await createAuthUserWithEmailAndPassword(
+                email,
+                password,
+                displayName
+            );
+
+            await createUserDocFromAuth(user, { displayName });
+            resetFormFields();
+        } catch (error) {
+            alert(error)
+            console.log("Error signing up", error);
+        }
+    };
+
+    const handleChange = (e) => {
         e.preventDefault();
         const { name, value } = e.target;
         setSignUpFields({ ...signUpFields, [ name ]: value })
-    }, [signUpFields]);
-
-    const handleSubmit = useCallback(async (e) => {
-            e.preventDefault();
-            if (password !== confirmPassword) {
-                alert("Passwords do not match")
-                return
-            };
-
-            try {
-                const { user } = await createAuthUserWithEmailAndPassword(email, password);
-                setCurrentUser(user);
-                await createUserDocFromAuth(user, { displayName });
-                resetFormFields();
-
-            } catch (error) {
-                alert(error)
-                console.log("Error signing up", error);
-            }
-    }, [ email, password, confirmPassword, displayName, setCurrentUser ]);
-
-    const resetFormFields = () => {
-        setSignUpFields(formFields);
-    }
-
+    };
 
     return (
         <div className="sign-up-container">
@@ -61,7 +60,7 @@ const SignUp = () => {
                     onChange={handleChange}
                     name="displayName"
                     value={displayName}
-                    />
+                />
 
                 <FormInput
                     label="Email"
@@ -70,7 +69,7 @@ const SignUp = () => {
                     onChange={handleChange}
                     name="email"
                     value={email}
-                    />
+                />
 
                 <FormInput
                     label="Password"
@@ -79,7 +78,7 @@ const SignUp = () => {
                     onChange={handleChange}
                     name="password"
                     value={password}
-                    />
+                />
 
                 <FormInput
                     label="Confirm Password"
