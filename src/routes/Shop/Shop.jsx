@@ -1,27 +1,19 @@
+import { useContext } from 'react';
+import { ProductContext } from '../../Context/ProductContext';
+import ProductCard from '../../components/product-card/ProductCard';
+import './Shop.scss';
+
 const Shop = () => {
 
-  /**
-   * @param {string} s
-   * @return {number}
-   */
-  var myAtoi = function (s) {
-    let num =[]
-    for (let index = 0; index < s.length; index++) {
-      const element = s[index];
-      if (Number.isInteger(+element) || element === '-') {
-        num.push(element)
-      }
-    }
-    return +num.join('')
-  };
-
-  console.log(myAtoi("-422hi -"))
+  const { products } = useContext(ProductContext);
 
   return (
-    <div>
-      <p>Hello, I am a functional component!</p>
+    <div className='product-container'>
+      {products.map((product) => (
+        <ProductCard key={product.id} product={product} />
+      ))}
     </div>
   );
 };
 
-export default Shop ;
+export default Shop;

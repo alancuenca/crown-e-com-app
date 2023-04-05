@@ -1,6 +1,6 @@
 .authentication-container {
     display: flex;
-    // position: relative;
+    position: relative;
     justify-content: space-between;
     width: 50dvw;
     margin: 5% auto;
@@ -9,8 +9,8 @@
 
 .welcome-user {
     position: absolute;
-    margin-left: 5%;
-    font-size: 2rem;
+    top: -10vh;
+    font-size: 2em;
     font-weight: bold;
     color: #333;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
@@ -19,9 +19,23 @@
 
 @media (max-width: 768px) {
     .authentication-container {
-        display: flex;
+        padding-top: 5dvh;
         flex-direction: column;
-        width: 90dvw;
+        width: 100dvw;
+    }
 
+    .welcome-user {
+        top: -3vh;
+        font-size: 1em;
+    }
+
+    .buttons-container{
+        flex-direction: column;
+        max-width: 200px;
+
+    }
+
+    form{
+        max-width: 90dvw;
     }
 }
