@@ -17,9 +17,9 @@ const Authentication = () => {
           </div>
           :
           <div className='authentication-container'>
-          <div className='welcome-user'>
+          <h1 className='welcome-user'>
             Welcome to Crown. Please Sign In
-          </div>
+          </h1>
             <SignIn />
             <SignUp />
           </div>

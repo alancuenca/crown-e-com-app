@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { CartContext } from '../../Context/CartContext';
+import { Link } from 'react-router-dom';
 import Button from '../buttons/Button';
 import CartItem from '../cart-item/CartItem';
 import './cart-dropdown.scss';
@@ -17,7 +18,9 @@ const CartDropdown = () => {
                     />
                 ))}
             </div>
-            <Button>Go to Check Out</Button>
+            <Link to="/checkout">
+            <Button >Go to Check Out</Button>
+            </Link>
         </div>
     );
 };
